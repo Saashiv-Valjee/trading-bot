@@ -8,18 +8,16 @@ import tensorflow as tf
 from tensorflow.keras import layers, models, preprocessing
 from sklearn.model_selection import train_test_split
 
-# Replace YOUR_ACCESS_TOKEN and YOUR_ACCOUNT_ID with your actual access token and account ID
+
 access_token = ""
 account_id = ""
 
 # Set up the Oanda API client
 client = oandapyV20.API(access_token=access_token)
 
-# Set the currency pair that you want to trade
+# Set the currency pair
 currency_pair = "EUR_USD"
 
-# Set the parameters for the trading bot
-# You can adjust these parameters to suit your needs
 buy_threshold = 1.05 # Buy if the price falls below this threshold
 sell_threshold = 1.1 # Sell if the price rises above this threshold
 amount_per_trade = 100 # The amount you want to spend on each trade
@@ -57,8 +55,9 @@ def buy(price):
     r = orders.OrderCreate(accountID=account_id, data=data)
     client.request(r)
 
-# Function to place a sell order
+
 def sell(price):
+    
     # Retrieve the current account details
     r = accounts.AccountDetails(accountID=account_id)
     account_details = client.request(r)
@@ -120,7 +119,7 @@ def get_historical_data(count):
 
 # Function to train and evaluate a machine learning model
 def train_model(data, window_size):
-    # Convert the close prices from strings to floats using numpy
+
     close_prices = np.array(data, dtype=float)
     print(data)
 
@@ -128,7 +127,7 @@ def train_model(data, window_size):
     X_train, X_test, y_train, y_test = train_test_split(close_prices, close_prices, test_size=0.2, shuffle=False)
     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, shuffle=False)
 
-    # Define a simple neural network with a single output neuron
+    # Define a neural network
     model = models.Sequential()
     model.add(layers.Dense(units=1, input_dim=1))
 
@@ -141,7 +140,7 @@ def train_model(data, window_size):
     return model
 
 
-# Main loop
+
 while True:
     # Retrieve and preprocess the historical data
     print('retrieving data')
@@ -163,7 +162,7 @@ while True:
     current_price = float(dataC["candles"][0]["mid"]["c"])
 
     # Adjust the buy_threshold and sell_threshold based on the prediction
-    # You can adjust the coefficients (0.5 and 1.5 in this example) to suit your needs
+    # adjust the coefficients (0.5 and 1.5)
     prediction_mean = np.mean(prediction)
     print(f'current price: {current_price}, prediction price: {prediction_mean}')
     if prediction_mean > float(current_price):
