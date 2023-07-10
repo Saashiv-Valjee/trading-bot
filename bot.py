@@ -9,8 +9,8 @@ from tensorflow.keras import layers, models, preprocessing
 from sklearn.model_selection import train_test_split
 
 # Replace YOUR_ACCESS_TOKEN and YOUR_ACCOUNT_ID with your actual access token and account ID
-access_token = "90c07764793c7d1818f3efa3fa997e3a-5ea6edea9acfe0b6821993523b9bce7c"
-account_id = "101-004-24225231-003"
+access_token = ""
+account_id = ""
 
 # Set up the Oanda API client
 client = oandapyV20.API(access_token=access_token)
